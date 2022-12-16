@@ -4,10 +4,11 @@ autoactivation
 
 
 actor End User
+fontawesome5brands f420 Client
 
-End User -> Angular App : input registration credentials
+End User -> Client : input registration credentials
 
-Angular App -> UserController : make fetch request
+Client -> UserController : make fetch request
 
 UserController -> User : map user data
 User --> UserController : return mapped user data
@@ -26,15 +27,15 @@ UserEntity -->UserRepo : return UserEntity instance
 UserRepo --> UserService : return Optional<UserEntity>
 UserService --> UserController : throw custom exception
 UserController ->UserController : catch custom exception
-UserController --> Angular App : send DTO
-Angular App --> End User : "Username already in use"
+UserController --> Client : send DTO
+Client --> End User : "Username already in use"
 
 else user doesn't exist
 
 UserEntity -->UserRepo : return null
 UserRepo --> UserService : return Optional<UserEntity>
 UserService --> UserController : return true
-UserController --> Angular App : return DTO
-Angular App --> End User : display "Registration successful! Please log in!"
+UserController --> Client : return DTO
+Client --> End User : display "Registration successful! Please log in!"
 
 end
