@@ -4,10 +4,11 @@ autoactivation
 
 
 actor End User
+fontawesome5brands f420 Client
 
-End User -> Angular App : select account to view
+End User -> Client : select account to view
 
-Angular App -> TransactionController : make fetch request
+Client -> TransactionController : make fetch request
 
 TransactionController -> TransactionService : make service call
 
@@ -33,5 +34,5 @@ Transaction --> TransactionService : return model
 end
 
 TransactionService --> TransactionController : return List<Transaction>
-TransactionController --> Angular App : return DTO<List<Transaction>>
-Angular App --> End User : display list of transactions
+TransactionController --> Client : return DTO<List<Transaction>>
+Client --> End User : display list of transactions
