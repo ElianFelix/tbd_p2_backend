@@ -1,0 +1,39 @@
+title Login Functionality
+
+autoactivation
+
+
+actor End User
+
+End User -> Angular App : input login credentials
+
+Angular App -> UserController : make fetch request
+
+UserController -> LoginTemplate : map login credentials
+LoginTemplate --> UserController : return mapped login credentials
+
+UserController -> UserService : make service call
+
+UserService -> UserRepo : findByUsernameAndPassword
+
+UserRepo -> UserEntity : map User data
+
+alt user exists
+
+UserEntity -->UserRepo : return UserEntity instance
+
+UserRepo --> UserService : return Optional<UserEntity>
+UserService --> UserController : return Token
+UserController --> Angular App : send DTO<Token>
+Angular App --> End User : display dashboard
+
+else user doesn't exists
+
+UserEntity -->UserRepo : return null
+UserRepo --> UserService : return Optional<UserEntity>
+UserService --> UserController : throw custom exception
+UserController->UserController : catch custom exception
+UserController --> Angular App : return DTO
+Angular App --> End User : display "login failed"
+
+end

@@ -1,0 +1,40 @@
+title Registration Functionality
+
+autoactivation
+
+
+actor End User
+
+End User -> Angular App : input registration credentials
+
+Angular App -> UserController : make fetch request
+
+UserController -> User : map user data
+User --> UserController : return mapped user data
+
+UserController -> UserService : make service call
+
+UserService -> UserRepo : findByUsername
+
+UserRepo -> UserEntity : map User data
+
+
+alt user exists
+
+UserEntity -->UserRepo : return UserEntity instance
+
+UserRepo --> UserService : return Optional<UserEntity>
+UserService --> UserController : throw custom exception
+UserController ->UserController : catch custom exception
+UserController --> Angular App : send DTO
+Angular App --> End User : "Username already in use"
+
+else user doesn't exist
+
+UserEntity -->UserRepo : return null
+UserRepo --> UserService : return Optional<UserEntity>
+UserService --> UserController : return true
+UserController --> Angular App : return DTO
+Angular App --> End User : display "Registration successful! Please log in!"
+
+end

@@ -1,0 +1,18 @@
+title Create Account functionality
+
+actor End User
+
+autoactivation 
+
+End User -> AngularClient : "Create Acount"
+AngularClient -> AccountController : fetch request
+AccountController -> Account : map Account data
+Account --> AccountController : return map
+AccountController -> AccountService : createAccount()
+AccountService -> AccountEntity : convert model to entity
+AccountEntity --> AccountService : return entity 
+AccountService -> AccountRepo : persist data
+AccountRepo --> AccountService : return persisted data
+AccountService --> AccountController : return true
+AccountController --> AngularClient : return DTO
+AngularClient --> End User : "Account created successfully!"
