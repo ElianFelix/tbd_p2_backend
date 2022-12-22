@@ -23,12 +23,5 @@ public class TransactionService {
 	@Autowired
 	private TransactionTypeRepository transactionTypeRepository;
 
-	public List<TransactionType> createTTypes(List<TransactionType>  types){
-		return transactionTypeRepository.saveAll(types);
-	}
-
-	public List<TransactionStatus> createTStatuses(List<TransactionStatus> statuses){
-		return transactionStatusRepository.saveAll(statuses);
-	}
 
 }

@@ -27,15 +27,4 @@ public class TransactionController {
 		return null;
 	}
 
-	@PostMapping("/type")
-	public List<TransactionType>  createType(@RequestBody List<TransactionType> types){
-		return tServ.createTTypes(types);
-	}
-
-	@PostMapping("/status")
-	public List<TransactionStatus>  createStatus(@RequestBody List<TransactionStatus> statuses ){
-		return tServ.createTStatuses(statuses);
-
-	}
-
 }
