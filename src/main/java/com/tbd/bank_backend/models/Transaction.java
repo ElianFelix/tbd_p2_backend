@@ -16,9 +16,9 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-//	@ManyToOne
-//	@JoinColumn(name = "user_id")
-//	User user
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	User user;
 	@Column(nullable = false)
 	double amount;
 	@ManyToOne
@@ -31,6 +31,4 @@ public class Transaction {
 	String description;
 	LocalDate date;
 	String merchantName;
-
-
 }
