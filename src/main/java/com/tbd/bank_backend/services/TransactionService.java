@@ -1,11 +1,7 @@
 package com.tbd.bank_backend.services;
 
 import com.tbd.bank_backend.models.Transaction;
-import com.tbd.bank_backend.models.TransactionStatus;
-import com.tbd.bank_backend.models.TransactionType;
 import com.tbd.bank_backend.repositories.TransactionRepository;
-import com.tbd.bank_backend.repositories.TransactionStatusRepository;
-import com.tbd.bank_backend.repositories.TransactionTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +13,10 @@ public class TransactionService {
 	@Autowired
 	 private TransactionRepository transactionRepository;
 
-	@Autowired
-	private TransactionStatusRepository transactionStatusRepository;
 
-	@Autowired
-	private TransactionTypeRepository transactionTypeRepository;
+	public List<Transaction> getallTransactions() {
+		return transactionRepository.findAll();
+	}
 
 
 }

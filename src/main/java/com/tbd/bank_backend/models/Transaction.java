@@ -17,8 +17,8 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	User user;
+	@JoinColumn(name = "account_id")
+	Account account;
 	@Column(nullable = false)
 	double amount;
 	@ManyToOne

@@ -18,13 +18,8 @@ public class TransactionController {
 	private TransactionService tServ;
 
 	@GetMapping
-	public List<Transaction> getTransactions(Principal principal){
-		return null;
-	}
-
-	@PostMapping
-	public Transaction createTransaction(Transaction transaction) {
-		return null;
+	public List<Transaction> getTransactions(){
+		return tServ.getallTransactions();
 	}
 
 }
