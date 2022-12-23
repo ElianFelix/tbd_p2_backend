@@ -4,6 +4,8 @@ package com.tbd.bank_backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -15,7 +17,7 @@ public class Account {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	int id;
+	UUID id;
 	String name;
 	@ManyToOne
 	@JoinColumn(name = "user_id")
