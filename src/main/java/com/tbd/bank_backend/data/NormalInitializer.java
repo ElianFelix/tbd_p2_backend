@@ -1,7 +1,9 @@
 package com.tbd.bank_backend.data;
 
+import com.tbd.bank_backend.models.AccountType;
 import com.tbd.bank_backend.models.TransactionStatus;
 import com.tbd.bank_backend.models.TransactionType;
+import com.tbd.bank_backend.repositories.AccountTypeRepository;
 import com.tbd.bank_backend.repositories.TransactionStatusRepository;
 import com.tbd.bank_backend.repositories.TransactionTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ public class NormalInitializer implements CommandLineRunner {
 	private TransactionStatusRepository statRepo;
 
 	@Autowired
-	private TransactionTypeRepository typeRepo;
+	private TransactionTypeRepository tTypeRepo;
+
+	@Autowired
+	private AccountTypeRepository aTypeRepo;
 
 
 	@Override
@@ -31,7 +36,7 @@ public class NormalInitializer implements CommandLineRunner {
 		types.add(new TransactionType(0, "Paypal"));
 		types.add(new TransactionType(0, "Other"));
 
-		typeRepo.saveAll(types);
+		tTypeRepo.saveAll(types);
 
 		//create list of default statuses
 		List<TransactionStatus> statuses = new ArrayList<>();
@@ -40,6 +45,11 @@ public class NormalInitializer implements CommandLineRunner {
 
 		statRepo.saveAll(statuses);
 
+		//create list of default account types
+		List<AccountType> atypes = new ArrayList<>();
+		atypes.add(new AccountType(0, "Checking"));
+		atypes.add(new AccountType(0, "Savings"));
 
+		aTypeRepo.saveAll(atypes);
 	}
 }
