@@ -27,12 +27,12 @@ public class UserController {
     }
 
     @PostMapping
-    public boolean registerUser(User newUser) {
+    public boolean registerUser(@RequestBody User newUser) {
         User createdUser = uServ.registerUser(newUser);
         return createdUser != null;
     }
 
-    @GetMapping(value = "/{userName}", params = {"validate"})
+    @GetMapping(value = "/{userName}", params = {"validate=true"})
     public boolean userExists(@PathVariable("userName")String userName) {
         return uServ.userExists(userName);
     }
