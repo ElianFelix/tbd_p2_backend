@@ -11,16 +11,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
-   @Autowired
-   private AccountService aServ;
+	@Autowired
+	private AccountService aServ;
 
-    @GetMapping
-    public List<Account> getAccounts(Principal principal) {
-        return aServ.getAccountsById(principal.getName());
-    }
+	@GetMapping
+	public List<Account> getAccounts(Principal principal) {
+//        return aServ.getAccountsById(principal.getName());
+		return aServ.getAccountsById("bob");
 
-    @PostMapping
-    public Account createAccount(@RequestBody Account account) {
-        return aServ.saveAccount(account);
-    }
+
+	}
+
+	@PostMapping
+	public Account createAccount(@RequestBody Account account) {
+		return aServ.createAccount(account);
+	}
+
 }
