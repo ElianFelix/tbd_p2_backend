@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Getter
 @Setter
@@ -16,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class AccountType {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	String type;
 }
