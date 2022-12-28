@@ -13,7 +13,6 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public List<Account> getAccountsById(String username) {
-        //return accountRepository.findAllAccountsByUserId(username);
         return accountRepository.findAllAccountsByUserId(username);
     }
 }
