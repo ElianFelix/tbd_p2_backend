@@ -3,9 +3,11 @@ package com.tbd.bank_backend.services;
 import com.tbd.bank_backend.models.Transaction;
 import com.tbd.bank_backend.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TransactionService {
@@ -14,8 +16,20 @@ public class TransactionService {
 	 private TransactionRepository transactionRepository;
 
 
-	public List<Transaction> getallTransactions() {
-		return transactionRepository.findAll();
+	public Page<Transaction> getAllTransactions(UUID accountId, int page, int size, String filter) {
+		PageRequest pr = PageRequest.of(page, size);
+		return switch(filter) {
+			case "Income" -> transactionRepository.findByAccountIdAndAmountGreaterThanEqual(accountId, pr, 0);
+			case "Expenses" -> transactionRepository.findByAccountIdAndAmountLessThan(accountId, pr, 0);
+			default -> transactionRepository.findAllByAccountId(accountId, pr);
+		};
+
+	}
+
+
+	public Transaction saveTransaction(Transaction transaction){
+
+		return transactionRepository.save(transaction);
 	}
 
 
