@@ -13,8 +13,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
-    @Autowired
-    private AccountService aServ;
+   @Autowired
+   private AccountService aServ;
 
     @GetMapping
     public List<Account> getAccounts(Principal principal) {
