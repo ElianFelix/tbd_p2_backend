@@ -26,4 +26,5 @@ public class AccountController {
 	public Account createAccount(@RequestBody Account account) {
 		return aServ.createAccount(account);
 	}
+
 }
