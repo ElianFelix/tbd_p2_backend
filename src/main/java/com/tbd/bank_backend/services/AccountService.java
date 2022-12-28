@@ -12,7 +12,7 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Account> getAccountsById(String username) {
-        return accountRepository.findAllAccountsByUserId(username);
+    public List<Account> getAccountsById(String userName) {
+        return accountRepository.findAllAccountsByUserUserName(userName);
     }
 }
