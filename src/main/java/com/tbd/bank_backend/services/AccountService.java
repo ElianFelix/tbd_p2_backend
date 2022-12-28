@@ -15,4 +15,8 @@ public class AccountService {
     public List<Account> getAccountsById(String userName) {
         return accountRepository.findAllAccountsByUserUserName(userName);
     }
+
+    public Account createAccount(Account account) {
+        return accountRepository.save(account);
+    }
 }
