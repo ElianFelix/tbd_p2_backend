@@ -1,20 +1,25 @@
 package com.tbd.bank_backend.data;
 
-import com.tbd.bank_backend.models.AccountType;
-import com.tbd.bank_backend.models.TransactionStatus;
-import com.tbd.bank_backend.models.TransactionType;
-import com.tbd.bank_backend.repositories.AccountTypeRepository;
-import com.tbd.bank_backend.repositories.TransactionStatusRepository;
-import com.tbd.bank_backend.repositories.TransactionTypeRepository;
+import com.github.javafaker.Faker;
+import com.tbd.bank_backend.models.*;
+import com.tbd.bank_backend.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class NormalInitializer implements CommandLineRunner {
+
+	//transactions
 	@Autowired
 	private TransactionStatusRepository statRepo;
 
@@ -22,7 +27,25 @@ public class NormalInitializer implements CommandLineRunner {
 	private TransactionTypeRepository tTypeRepo;
 
 	@Autowired
+	private TransactionRepository transactionRepo;
+
+	//accounts
+	@Autowired
 	private AccountTypeRepository aTypeRepo;
+
+	@Autowired
+	private AccountRepository accountRepo;
+
+	//user
+	@Autowired
+	private UserRepository userRepo;
+
+	//utils
+	@Autowired
+	private Faker faker;
+
+	@Autowired
+	private PasswordEncoder encoder;
 
 
 	@Override
@@ -51,5 +74,48 @@ public class NormalInitializer implements CommandLineRunner {
 		atypes.add(new AccountType(2, "Savings"));
 
 		aTypeRepo.saveAll(atypes);
+
+		//auto-generating fake users
+		List<User> users = IntStream.rangeClosed(1, 20)
+				.mapToObj(i -> new User(this.faker.name()
+						.username(), this.faker.internet()
+						.emailAddress(), this.faker.name()
+						.firstName(), this.faker.name()
+						.lastName(), this.encoder.encode(this.faker.funnyName()
+						.name())))
+				.toList();
+
+		userRepo.saveAll(users);
+
+		//auto generate accounts for each user
+		users.forEach(user -> {
+			List<Account> accounts = IntStream.rangeClosed(1, 2)
+					.mapToObj(i -> new Account(null, this.faker.funnyName()
+							.name(), user, faker.number()
+							.randomDouble(2, 0, 10000), new AccountType(this.faker.number()
+							.numberBetween(1, 2), null)))
+					.toList();
+			accountRepo.saveAll(accounts);
+
+
+			//auto generate transactions for each account
+			accounts.forEach(account -> {
+				List<Transaction> transactions = IntStream.rangeClosed(1, 100)
+						.mapToObj(i -> new Transaction(0, account, this.faker.number()
+								.randomDouble(2, -3000, 3000), new TransactionType(this.faker.number()
+								.numberBetween(1, 5), null), new TransactionStatus(1, null), "Food",
+								this.faker.hitchhikersGuideToTheGalaxy()
+										.specie(), this.faker.date()
+								.between(Date.from(Instant.ofEpochMilli(1000)), Date.from(Instant.now()))
+								.toInstant()
+								.atZone(ZoneId.systemDefault())
+								.toLocalDate(), this.faker.rickAndMorty()
+								.character()))
+						.toList();
+
+				transactionRepo.saveAll(transactions);
+
+			});
+		});
 	}
 }
