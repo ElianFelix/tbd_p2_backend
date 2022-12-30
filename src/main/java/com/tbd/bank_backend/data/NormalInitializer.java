@@ -81,7 +81,7 @@ public class NormalInitializer implements CommandLineRunner {
 						.username(), this.faker.internet()
 						.emailAddress(), this.faker.name()
 						.firstName(), this.faker.name()
-						.lastName(), "password"))
+						.lastName(), encoder.encode("password")))
 				.toList();
 
 		userRepo.saveAll(users);
