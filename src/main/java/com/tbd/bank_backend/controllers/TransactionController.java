@@ -22,6 +22,11 @@ public class TransactionController {
 		return tServ.getAllTransactions(accountId, page, size, filter);
 	}
 
+	@GetMapping("/transaction/{id}")
+	public Transaction getTransactionById(@PathVariable(name = "id") int id){
+		return tServ.getTransactionById(id).get();
+	}
+
 	@PostMapping
 	public Transaction createTransaction(@RequestBody Transaction transaction) {
 		return tServ.saveTransaction(transaction);

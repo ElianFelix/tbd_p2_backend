@@ -109,7 +109,7 @@ public class NormalInitializer implements CommandLineRunner {
 								.between(Date.from(Instant.ofEpochMilli(1000)), Date.from(Instant.now()))
 								.toInstant()
 								.atZone(ZoneId.systemDefault())
-								.toLocalDate(), this.faker.rickAndMorty()
+								.toLocalDate(), this.faker.hobbit()
 								.character()))
 						.toList();
 
