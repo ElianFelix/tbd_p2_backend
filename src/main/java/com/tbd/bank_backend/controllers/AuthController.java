@@ -24,12 +24,14 @@ public class AuthController {
     @PostMapping("/api/auth/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
         try {
+            System.out.println(request.getUserName() + "    " + request.getPassword());
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUserName(), request.getPassword())
             );
-
+            System.out.println(authentication);
             User user = (User) authentication.getPrincipal();
+            System.out.println(user);
             String accessToken = jwtUtil.generateAccessToken(user);
             AuthResponse response = new AuthResponse(user.getUsername(), accessToken);
 

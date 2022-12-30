@@ -73,8 +73,6 @@ public class SecurityConfig {
 				);
 
 		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
-		http.httpBasic();
 		return http.build();
 	}
 
@@ -96,8 +94,7 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public AuthenticationManager authenticationManager(
-			AuthenticationConfiguration authConfig) throws Exception {
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
 		return authConfig.getAuthenticationManager();
 	}
 

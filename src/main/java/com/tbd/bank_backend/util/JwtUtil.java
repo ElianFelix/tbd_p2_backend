@@ -21,13 +21,14 @@ import com.tbd.bank_backend.models.User;
     private String SECRET_KEY;
 
     public String generateAccessToken(User user) {
+        System.out.println(user);
         return Jwts.builder()
-        .setSubject(String.format("%s,%s", user.getUsername(), user.getEmail()))
-        .setIssuer("tbdbank")
-        .setIssuedAt(new Date())
-        .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
-        .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-        .compact();
+            .setSubject(String.format("%s,%s", user.getUsername(), user.getEmail()))
+            .setIssuer("tbdbank")
+            .setIssuedAt(new Date())
+            .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
+            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+            .compact();
 
     }
 

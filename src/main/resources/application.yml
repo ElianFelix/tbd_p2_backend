@@ -12,4 +12,4 @@ spring:
       ddl-auto: create
 app:
   jwt:
-    secret: abcdefghijklmnOPQRSTUVWXYZ
+    secret: 12odUZMFCoVSpQbqdMXnK65ci5i9TVgFtnmTGQ7O+MCKUSRMYyVfZmVzWr2zFCiBIhtodeSaR60Lhdip+w/uwQ====

@@ -2,10 +2,11 @@ package com.tbd.bank_backend.security;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.tbd.bank_backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, jakarta.servlet.FilterChain filterChain) throws jakarta.servlet.ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         if (!hasAuthorizationBearer(request)) {
             filterChain.doFilter(request, response);
@@ -43,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean hasAuthorizationBearer(jakarta.servlet.http.HttpServletRequest request) {
+    private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
             return false;
@@ -52,13 +53,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return true;
     }
 
-    private String getAccessToken(jakarta.servlet.http.HttpServletRequest request) {
+    private String getAccessToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         String token = header.split(" ")[1].trim();
         return token;
     }
 
-    private void setAuthenticationContext(String token, jakarta.servlet.http.HttpServletRequest request) {
+    private void setAuthenticationContext(String token, HttpServletRequest request) {
         UserDetails userDetails = getUserDetails(token);
 
         UsernamePasswordAuthenticationToken
