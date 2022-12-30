@@ -1,17 +1,25 @@
 package com.tbd.bank_backend.security;
 
+import com.tbd.bank_backend.repositories.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,6 +32,17 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+	@Autowired
+	private UserRepository userRepo;
+	@Autowired private JwtTokenFilter jwtTokenFilter;
+
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return username -> userRepo.findByUserName(username)
+			.orElseThrow(
+			() -> new UsernameNotFoundException("User " + username + " not found"));
+	}
 
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
@@ -40,17 +59,25 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.cors(Customizer.withDefaults());
-		http.securityMatcher("/api/**");
-		http.authorizeHttpRequests().anyRequest().permitAll();
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.httpBasic();
+		http.authorizeHttpRequests().requestMatchers("/api/auth/login", "/api/users").permitAll()
+				.anyRequest().authenticated();
+
+		http.exceptionHandling()
+				.authenticationEntryPoint(
+						(request, response, ex)->{
+							response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+						}
+				);
+
+		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		String idForEncode = "bcrypt";
-		Map encoders = new HashMap<>();
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
 		encoders.put(idForEncode, new BCryptPasswordEncoder());
 		encoders.put("noop", NoOpPasswordEncoder.getInstance());
 		encoders.put("pbkdf2", Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_5());
@@ -61,8 +88,12 @@ public class SecurityConfig {
 		encoders.put("argon2@SpringSecurity_v5_8", Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8());
 		encoders.put("sha256", new StandardPasswordEncoder());
 
-		PasswordEncoder passwordEncoder = new DelegatingPasswordEncoder(idForEncode, encoders);
-		return passwordEncoder;
+		return new DelegatingPasswordEncoder(idForEncode, encoders);
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
 	}
 
 }
