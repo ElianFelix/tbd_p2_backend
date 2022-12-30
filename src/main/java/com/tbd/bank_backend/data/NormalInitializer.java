@@ -81,8 +81,7 @@ public class NormalInitializer implements CommandLineRunner {
 						.username(), this.faker.internet()
 						.emailAddress(), this.faker.name()
 						.firstName(), this.faker.name()
-						.lastName(), this.encoder.encode(this.faker.funnyName()
-						.name())))
+						.lastName(), encoder.encode("password")))
 				.toList();
 
 		userRepo.saveAll(users);
@@ -109,7 +108,7 @@ public class NormalInitializer implements CommandLineRunner {
 								.between(Date.from(Instant.ofEpochMilli(1000)), Date.from(Instant.now()))
 								.toInstant()
 								.atZone(ZoneId.systemDefault())
-								.toLocalDate(), this.faker.rickAndMorty()
+								.toLocalDate(), this.faker.hobbit()
 								.character()))
 						.toList();
 
