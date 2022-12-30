@@ -4,6 +4,7 @@ import com.tbd.bank_backend.models.User;
 import com.tbd.bank_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public class UserController {
 
     @Autowired
     private UserService uServ;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -28,6 +31,7 @@ public class UserController {
 
     @PostMapping
     public boolean registerUser(@RequestBody User newUser) {
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         User createdUser = uServ.registerUser(newUser);
         return createdUser != null;
     }
