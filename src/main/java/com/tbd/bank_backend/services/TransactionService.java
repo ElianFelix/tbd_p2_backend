@@ -5,6 +5,7 @@ import com.tbd.bank_backend.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +20,7 @@ public class TransactionService {
 
 
 	public Page<Transaction> getAllTransactions(UUID accountId, int page, int size, String filter) {
-		PageRequest pr = PageRequest.of(page, size);
+		PageRequest pr = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "date"));
 		return switch(filter) {
 			case "Income" -> transactionRepository.findByAccountIdAndAmountGreaterThanEqual(accountId, pr, 0);
 			case "Expenses" -> transactionRepository.findByAccountIdAndAmountLessThan(accountId, pr, 0);

@@ -17,7 +17,7 @@ import java.util.Collection;
 public class User implements UserDetails {
 
 	@Id
-	String userName;
+	String username;
 	String email;
 	String firstName;
 	String lastName;
@@ -26,11 +26,6 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.userName;
 	}
 
 	@Override
