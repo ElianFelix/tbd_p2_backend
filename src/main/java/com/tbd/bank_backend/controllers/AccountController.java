@@ -18,8 +18,8 @@ public class AccountController {
 
 	@GetMapping
 	public List<Account> getAccounts(Principal principal) {
-        //return aServ.getAccountsById(principal.getName());
-		return aServ.getAccountsById("ajbarea");
+        return aServ.getAccountsById(principal.getName());
+		//return aServ.getAccountsById("ajbarea");
 	}
 
     @GetMapping("/{id}")
@@ -31,5 +31,10 @@ public class AccountController {
     public Account createAccount(@RequestBody Account account) {
         return aServ.saveAccount(account);
     }
+
+	@PutMapping("/{id}/balance")
+	public boolean updateBalance(@PathVariable UUID id, @RequestBody Account account){
+		return aServ.updateBalance(id, account);
+	}
 
 }
