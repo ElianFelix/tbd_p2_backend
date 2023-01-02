@@ -1,9 +1,12 @@
 package com.tbd.bank_backend.controllers;
 
+import com.tbd.bank_backend.dto.ResultResponse;
 import com.tbd.bank_backend.models.User;
 import com.tbd.bank_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +33,19 @@ public class UserController {
     }
 
     @PostMapping
-    public boolean registerUser(@RequestBody User newUser) {
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        User createdUser = uServ.registerUser(newUser);
-        return createdUser != null;
+    public ResponseEntity<?> registerUser(@RequestBody User newUser) {
+        if (!uServ.userExists(newUser.getUsername())) {
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            uServ.registerUser(newUser);
+            return ResponseEntity.ok(new ResultResponse(true));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.FOUND).body(new ResultResponse(false));
+        }
     }
 
     @GetMapping(value = "/{userName}", params = {"validate=true"})
-    public boolean userExists(@PathVariable("userName")String userName) {
-        return uServ.userExists(userName);
+    public ResponseEntity<?> userExists(@PathVariable("userName")String userName) {
+        return ResponseEntity.ok(new ResultResponse(uServ.userExists(userName)));
     }
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -62,7 +63,8 @@ public class SecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.cors(Customizer.withDefaults());
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.authorizeHttpRequests().requestMatchers("/api/auth/login", "/api/users").permitAll()
+		http.authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+				.requestMatchers(HttpMethod.POST,"/api/users").permitAll()
 				.anyRequest().authenticated();
 
 		http.exceptionHandling()
