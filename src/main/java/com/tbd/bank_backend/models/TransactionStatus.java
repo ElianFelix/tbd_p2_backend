@@ -15,7 +15,6 @@ import lombok.*;
 @Entity(name = "transaction_status")
 public class TransactionStatus {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String status;
 }

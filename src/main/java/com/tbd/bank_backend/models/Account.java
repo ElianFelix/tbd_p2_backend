@@ -24,7 +24,7 @@ public class Account {
 	User user;
 	double balance;
 	@ManyToOne
-	@JoinColumn(name="type_id")
+	@JoinColumn(name = "type_id")
 	AccountType type;
 
 }

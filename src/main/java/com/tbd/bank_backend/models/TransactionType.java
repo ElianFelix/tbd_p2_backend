@@ -15,7 +15,6 @@ import lombok.*;
 public class TransactionType {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String type;
 }
