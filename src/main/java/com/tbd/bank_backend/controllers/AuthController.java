@@ -24,10 +24,10 @@ public class AuthController {
     @PostMapping("/api/auth/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest request) {
         try {
-            System.out.println(request.getUsername() + "    " + request.getPassword());
+            System.out.println(request.getUserName() + "    " + request.getPassword());
             Authentication authentication = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getUsername(), request.getPassword())
+                            request.getUserName(), request.getPassword())
             );
             System.out.println(authentication);
             User user = (User) authentication.getPrincipal();
