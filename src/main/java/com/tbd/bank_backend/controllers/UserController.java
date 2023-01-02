@@ -47,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userName}")
+    @PutMapping("/{userName}/change-pswd")
     public ResponseEntity<?> UpdateUserDetails(@RequestBody User reqUser) {
         if (uServ.getUserById(reqUser.getUsername()).isPresent()) {
             User updateUser = uServ.getUserById(reqUser.getUsername()).get();
