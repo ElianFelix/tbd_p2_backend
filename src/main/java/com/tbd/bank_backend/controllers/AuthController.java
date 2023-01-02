@@ -36,9 +36,8 @@ public class AuthController {
             AuthResponse response = new AuthResponse(user.getUsername(), accessToken);
 
             return ResponseEntity.ok().body(response);
-
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("", ""));
         }
     }
 }
