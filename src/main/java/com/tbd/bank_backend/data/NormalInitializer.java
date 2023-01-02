@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,14 @@ public class NormalInitializer implements CommandLineRunner {
 
 	@Autowired
 	private AccountRepository accountRepo;
+
+	//requests
+	@Autowired
+	private RequestStatusRepository requestStatusRepo;
+
+	//notifications
+	@Autowired
+	private NotificationStatusRepository notificationStatusRep;
 
 	//user
 	@Autowired
@@ -74,6 +81,20 @@ public class NormalInitializer implements CommandLineRunner {
 		atypes.add(new AccountType(2, "Savings"));
 
 		aTypeRepo.saveAll(atypes);
+
+		//create list of default Request statuses.
+		List<RequestStatus> requestStatuses = new ArrayList<>();
+		requestStatuses.add(new RequestStatus(1, "PENDING"));
+		requestStatuses.add(new RequestStatus(2, "ACCEPTED"));
+
+		requestStatusRepo.saveAll(requestStatuses);
+
+		//create list of default Notification statuses
+		List<NotificationStatus> notificationStatuses = new ArrayList<>();
+		notificationStatuses.add(new NotificationStatus(1, "UNREAD"));
+		notificationStatuses.add(new NotificationStatus(2, "READ"));
+
+		notificationStatusRep.saveAll(notificationStatuses);
 
 		//auto-generating fake users
 		List<User> users = IntStream.rangeClosed(1, 20)
