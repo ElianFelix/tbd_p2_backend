@@ -17,8 +17,8 @@ public class TransactionController {
 	private TransactionService tServ;
 
 	@GetMapping("/{id}")
-	public Page<Transaction> getTransactions(@PathVariable(name = "id") UUID accountId, @RequestParam int page,
-	                                         @RequestParam int size, @RequestParam(defaultValue = "potatoes") String filter) {
+	public Page<Transaction> getTransactions(@PathVariable(name = "id") UUID accountId, @RequestParam(defaultValue = "0") int page,
+	                                         @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "potatoes") String filter) {
 		return tServ.getAllTransactions(accountId, page, size, filter);
 	}
 
