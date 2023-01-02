@@ -2,6 +2,7 @@ package com.tbd.bank_backend.controllers;
 
 import com.tbd.bank_backend.dto.ResultResponse;
 import com.tbd.bank_backend.models.User;
+import com.tbd.bank_backend.repositories.UserRepository;
 import com.tbd.bank_backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,8 @@ public class UserController {
     private UserService uServ;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -37,6 +40,34 @@ public class UserController {
         if (!uServ.userExists(newUser.getUsername())) {
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             uServ.registerUser(newUser);
+            return ResponseEntity.ok(new ResultResponse(true));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.FOUND).body(new ResultResponse(false));
+        }
+    }
+
+    @PutMapping("/{userName}")
+    public ResponseEntity<?> UpdateUserDetails(@RequestBody User reqUser) {
+        if (uServ.getUserById(reqUser.getUsername()).isPresent()) {
+            User updateUser = uServ.getUserById(reqUser.getUsername()).get();
+            updateUser.setFirstName(reqUser.getFirstName());
+            updateUser.setLastName(reqUser.getLastName());
+            updateUser.setEmail(reqUser.getEmail());
+            uServ.registerUser(updateUser);
+            return ResponseEntity.ok(new ResultResponse(true));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.FOUND).body(new ResultResponse(false));
+        }
+    }
+
+    @PutMapping("/{userName}")
+    public ResponseEntity<?> UpdateUserPassword(@PathVariable("userName")String userName, @RequestBody String password) {
+        if (uServ.getUserById(userName).isPresent()) {
+            User updateUser = uServ.getUserById(userName).get();
+            updateUser.setPassword(passwordEncoder.encode(password));
+            uServ.registerUser(updateUser);
             return ResponseEntity.ok(new ResultResponse(true));
         }
         else {
