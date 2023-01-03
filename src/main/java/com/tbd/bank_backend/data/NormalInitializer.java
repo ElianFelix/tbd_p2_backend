@@ -123,7 +123,7 @@ public class NormalInitializer implements CommandLineRunner {
 				List<Transaction> transactions = IntStream.rangeClosed(1, 100)
 						.mapToObj(i -> new Transaction(0, account, this.faker.number()
 								.randomDouble(2, -3000, 3000), new TransactionType(this.faker.number()
-								.numberBetween(1, 5), null), new TransactionStatus(1, null), "Food",
+								.numberBetween(1, 5), null), new TransactionStatus(2, null), "Food",
 								this.faker.hitchhikersGuideToTheGalaxy()
 										.specie(), this.faker.date()
 								.between(Date.from(Instant.ofEpochMilli(1000)), Date.from(Instant.now()))
