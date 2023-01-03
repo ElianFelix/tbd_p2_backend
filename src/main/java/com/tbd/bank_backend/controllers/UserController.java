@@ -47,7 +47,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{userName}/change-pswd")
+    @PutMapping("/{userName}")
     public ResponseEntity<?> UpdateUserDetails(@RequestBody User reqUser) {
         if (uServ.getUserById(reqUser.getUsername()).isPresent()) {
             User updateUser = uServ.getUserById(reqUser.getUsername()).get();
@@ -58,11 +58,11 @@ public class UserController {
             return ResponseEntity.ok(new ResultResponse(true));
         }
         else {
-            return ResponseEntity.status(HttpStatus.FOUND).body(new ResultResponse(false));
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new ResultResponse(false));
         }
     }
 
-    @PutMapping("/{userName}")
+    @PutMapping("/{userName}/change-pswd")
     public ResponseEntity<?> UpdateUserPassword(@PathVariable("userName")String userName, @RequestBody String password) {
         if (uServ.getUserById(userName).isPresent()) {
             User updateUser = uServ.getUserById(userName).get();
@@ -71,7 +71,7 @@ public class UserController {
             return ResponseEntity.ok(new ResultResponse(true));
         }
         else {
-            return ResponseEntity.status(HttpStatus.FOUND).body(new ResultResponse(false));
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(new ResultResponse(false));
         }
     }
 
